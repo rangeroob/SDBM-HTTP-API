@@ -17,6 +17,7 @@ module Api
               end
               lock.release_write_lock
               logger.info("DELETION AT #{key.dump} WAS MADE SUCCESSFULLY")
+              res.json JSON.dump({ "ok": true })
               res.status = 204
             end
           end
