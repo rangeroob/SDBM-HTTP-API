@@ -10,20 +10,20 @@ module Api
           lock.with_write_lock do
             SDBM.open("db/#{db}") do |database|
               begin
-                database[key.to_s.dump] = value.to_s.dump
+                database[key.to_s] = value.to_s
               rescue SDBMError
                 lock.release_write_lock
-                logger.error("INSERTION FOR #{key.dump} = #{value.dump} WAS MADE UNSUCCESSFULLY")
+                logger.error("INSERTION FOR #{key} = #{value} WAS MADE UNSUCCESSFULLY")
                 res.status = 500
               end
               lock.release_write_lock
-              logger.info("INSERTION FOR #{key.dump} = #{value.dump} WAS MADE SUCCESSFULLY")
+              logger.info("INSERTION FOR #{key} = #{value} WAS MADE SUCCESSFULLY")
               res.json JSON.dump({ "ok": true })
               res.status = 201
             end
           end
         else
-          logger.error("DATABASE #{db.dump} DOES NOT EXIST")
+          logger.error("DATABASE #{db} DOES NOT EXIST")
           res.status = 500
         end
       end
