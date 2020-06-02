@@ -5,7 +5,7 @@ module Api
     lock = Concurrent::ReadWriteLock.new
     logger = Logger.new('app.log')
     Insert.define do
-      on ':db/:key&:value' do |db, key, value|
+      on 'insert/:db/:key&:value' do |db, key, value|
         if File.exist?("db/#{db}.pag")
           lock.with_write_lock do
             SDBM.open("db/#{db}") do |database|
@@ -18,7 +18,6 @@ module Api
               end
               lock.release_write_lock
               logger.info("INSERTION FOR #{key} = #{value} WAS MADE SUCCESSFULLY")
-              res.json JSON.dump({ "ok": true })
               res.status = 201
             end
           end

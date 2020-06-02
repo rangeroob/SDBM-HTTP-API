@@ -5,7 +5,7 @@ module Api
     lock = Concurrent::ReadWriteLock.new
     logger = Logger.new('app.log')
     Delete.define do
-      on ':db/:key' do |db, key|
+      on 'delete/:db/:key' do |db, key|
         if File.exist?("db/#{db}.pag")
           lock.with_write_lock do
             SDBM.open("db/#{db}") do |database|
@@ -16,13 +16,12 @@ module Api
                 res.status = 500
               end
               lock.release_write_lock
-              logger.info("DELETION AT #{key.dump} WAS MADE SUCCESSFULLY")
-              res.json JSON.dump({ "ok": true })
+              logger.info("DELETION AT #{key} WAS MADE SUCCESSFULLY")
               res.status = 204
             end
           end
         else
-          logger.error("DATABASE #{db.dump} DOES NOT EXIST")
+          logger.error("DATABASE #{db} DOES NOT EXIST")
           res.status = 500
         end
       end

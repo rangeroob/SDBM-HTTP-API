@@ -5,7 +5,7 @@ module Api
     lock = Concurrent::ReadWriteLock.new
     logger = Logger.new('app.log')
     RetrieveDB.define do
-      on ':db' do |db|
+      on 'retrieve/:db' do |db|
         if lock.acquire_read_lock == true
           lock.with_read_lock do
             SDBM.open("db/#{db}", 0o444) do |database|
