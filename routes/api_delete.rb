@@ -5,7 +5,7 @@ module Api
     lock = Concurrent::ReadWriteLock.new
     logger = Logger.new('app.log')
     Delete.define do
-      on 'delete/:db/:key' do |db, key|
+      on ':db/:key' do |db, key|
         if File.exist?("db/#{db}.pag")
           lock.with_write_lock do
             SDBM.open("db/#{db}") do |database|
