@@ -37,17 +37,23 @@ Cuba.define do
       res.json data
     end
     on "api/v#{API_VERSION}" do
-      run Api::RetrieveDB
+      on 'retrieve' do
+        run Api::RetrieveDB
+      end
     end
   end
   on post do
     on "api/v#{API_VERSION}" do
-      run Api::Insert
+      on 'insert' do
+        run Api::Insert
+      end
     end
   end
   on delete do
     on "api/v#{API_VERSION}" do
-      run Api::Delete
+      on 'delete' do
+        run Api::Delete
+      end
     end
   end
 end
