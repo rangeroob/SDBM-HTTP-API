@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# SDBM AS A SERVICE
+# SDBM HTTP API
 # Copyright (C) 2020 Derek Viera
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
