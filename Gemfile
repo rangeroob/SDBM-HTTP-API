@@ -4,8 +4,7 @@ source 'https://rubygems.org'
 
 group 'production' do
   gem 'concurrent-ruby'
-  gem 'cuba', git: 'https://github.com/rangeroob/cuba.git',
-              branch: 'Add-Spyro-Content-type-methods'
+  gem 'cuba'
 end
 
 group 'test' do
