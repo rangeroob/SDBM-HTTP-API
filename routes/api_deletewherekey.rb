@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 module Api
-  class Delete < Cuba
+  # Delete key-value pair where key is located
+  class DeleteWhereKey < Cuba
     lock = Concurrent::ReadWriteLock.new
-    logger = Logger.new('app.log')
-    Delete.define do
+    logger = Logger.new('./log/app.log')
+    DeleteWhereKey.define do
       on ':db/:key' do |db, key|
         if File.exist?("db/#{db}.pag")
           lock.with_write_lock do
@@ -12,17 +13,19 @@ module Api
               begin
                 database.delete(key)
               rescue SDBMError
-                lock.release_write_lock
-                res.status = 500
+                sdbm_error
+              rescue IndexError
+                index_error
+              rescue StandardError
+                standard_error
               end
               lock.release_write_lock
-              logger.info("DELETION AT #{key} WAS MADE SUCCESSFULLY")
+              logger.info("DELETION AT #{key} PASSED")
               res.status = 204
             end
           end
         else
-          logger.error("DATABASE #{db} DOES NOT EXIST")
-          res.status = 500
+          database_not_found
         end
       end
     end
