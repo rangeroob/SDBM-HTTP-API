@@ -1,29 +1,31 @@
 # frozen_string_literal: true
 
 module Api
-  class Insert < Cuba
+  # Store the key value pair given
+  class StoreKeyValue < Cuba
     lock = Concurrent::ReadWriteLock.new
-    logger = Logger.new('app.log')
-    Insert.define do
+    logger = Logger.new('./log/app.log')
+    StoreKeyValue.define do
       on ':db/:key&:value' do |db, key, value|
         if File.exist?("db/#{db}.pag")
           lock.with_write_lock do
             SDBM.open("db/#{db}") do |database|
               begin
-                database[key.to_s] = value.to_s
+                database.store(key, value)
               rescue SDBMError
-                lock.release_write_lock
-                logger.error("INSERTION FOR #{key} = #{value} WAS MADE UNSUCCESSFULLY")
-                res.status = 500
+                sdbm_error
+              rescue IndexError
+                index_error
+              rescue StandardError
+                standard_error
               end
               lock.release_write_lock
-              logger.info("INSERTION FOR #{key} = #{value} WAS MADE SUCCESSFULLY")
+              logger.info("STORING #{key} = #{value} PASSED")
               res.status = 201
             end
           end
         else
-          logger.error("DATABASE #{db} DOES NOT EXIST")
-          res.status = 500
+          database_not_found
         end
       end
     end
