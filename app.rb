@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# SDBM AS A SERVICE
+# SDBM HTTP API
 # Copyright (C) 2020 Derek Viera
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,38 +21,51 @@ require 'json'
 require 'sdbm'
 require 'securerandom'
 require 'logger'
-require './routes/api_insert'
+require './routes/api_storekeyvalue'
 require './routes/api_retrievedb'
-require './routes/api_delete'
+require './routes/api_retrievevaluewherekey'
+require './routes/api_deletewherekey'
+require './routes/error_messages'
 require './version'
 
-logger = Logger.new('app.log')
+MEGABYTE = 1024**2
+ONE_HUNDRED_MEGABYTES = MEGABYTE * 100
+
+logger = Logger.new('./log/app.log', 3, ONE_HUNDRED_MEGABYTES)
 
 Cuba.use Rack::CommonLogger, logger
 
 Cuba.define do
   on get do
     on root do
-      data = JSON.dump({ first_name: 'Hello', last_name: 'World' })
+      data = JSON.dump({
+                         status: 200,
+                         Program_name: 'SDBM HTTP API',
+                         License: 'AGPL-3.0-or-later',
+                         Author: 'Derek Viera'
+                       })
       res.json data
     end
     on "api/v#{API_VERSION}" do
-      on 'retrieve' do
+      on 'retrieve_db' do
         run Api::RetrieveDB
+      end
+      on 'retrieve_value_where_key' do
+        run Api::RetrieveValueWhereKey
       end
     end
   end
   on post do
     on "api/v#{API_VERSION}" do
-      on 'insert' do
-        run Api::Insert
+      on 'store_key_value' do
+        run Api::StoreKeyValue
       end
     end
   end
   on delete do
     on "api/v#{API_VERSION}" do
-      on 'delete' do
-        run Api::Delete
+      on 'delete_where_key' do
+        run Api::DeleteWhereKey
       end
     end
   end
