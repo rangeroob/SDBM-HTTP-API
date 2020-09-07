@@ -9,9 +9,9 @@ Rake::TestTask.new do |t|
 end
 
 namespace :db do
-  Dir.mkdir('db') unless File.exist?('db')
   desc 'Create database'
   task :create, [:database_name] do |_t, args|
+    Dir.mkdir('db') unless File.exist?('db')
     require 'sdbm'
     SDBM.open("db/#{args.database_name}") do |db|
       db['hello'] = 'world'
