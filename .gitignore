@@ -11,7 +11,7 @@
 /tmp/
 /db/*
 /.vscode/
-/log/*
+/log/*.log
 # Used by dotenv library to load environment variables.
 .env
 
