@@ -17,6 +17,12 @@ namespace :db do
       db['hello'] = 'world'
     end
   end
+  desc 'Clear database'
+  task :clear, [:database_name] do |_t, args|
+    Dir.mkdir('db') unless File.exist?('db')
+    require 'sdbm'
+    SDBM.open("db/#{args.database_name}", & :clear)
+  end
 end
 
 namespace :log do
