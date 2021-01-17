@@ -12,6 +12,8 @@ services:
   #   image: postgres
   #   volumes:
   #     - postgres_data:/var/lib/postgresql/data
+  ports:
+    - 80:8080
   web:
     build:
       context: .
