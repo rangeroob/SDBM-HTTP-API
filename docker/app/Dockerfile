@@ -8,7 +8,7 @@ FROM ruby:2.7.2
 # This directory name is arbitrary and could be anything.
 ENV ROOT /var/www/SDBM-HTTP-API
 WORKDIR $ROOT
-COPY . /SDBM-HTTP-API
+COPY . /var/www/SDBM-HTTP-API
 VOLUME SDBM01:$ROOT/db
 ENV RACK_ENV='production'
 # Run this command. RUN can be used to run anything. In our
