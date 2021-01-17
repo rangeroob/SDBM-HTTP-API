@@ -13,7 +13,7 @@ WORKDIR $RAILS_ROOT
 RUN mkdir log
 
 # copy over static assets
-COPY public public/
+# COPY public public/
 
 # Copy Nginx config template
 COPY docker/web/nginx.conf /tmp/docker.nginx
