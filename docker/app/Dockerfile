@@ -18,7 +18,7 @@ COPY Gemfile.lock Gemfile.lock
 RUN bundle config --local without development:test
 RUN bundle install
 
-RUN bundle exec rake db:create[hello]
+CMD ["bundle", "exec", "rake", "db:create[hello]"]
 
 # Tell Docker to listen on port 4567.
 EXPOSE 8080
@@ -27,4 +27,4 @@ EXPOSE 8080
 # run the following command:
 # $ bundle exec rackup --host 0.0.0.0 -p 4567.
 
- CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "8080"]
+CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "8080"]
