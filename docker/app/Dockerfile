@@ -6,13 +6,15 @@ FROM ruby:2.7.2
 
 # Put all this application's files in a directory called /code.
 # This directory name is arbitrary and could be anything.
-ENV ROOT /var/www/SDBM-HTTP-API
-WORKDIR $ROOT
-COPY . /var/www/SDBM-HTTP-API
-VOLUME SDBM01:$ROOT/db
+ENV RAILS_ROOT /var/www/app
+RUN mkdir -p $RAILS_ROOT
+WORKDIR $RAILS_ROOT
 ENV RACK_ENV='production'
+VOLUME SDBM01:$RAILS_ROOT/db
 # Run this command. RUN can be used to run anything. In our
 # case we're using it to install our dependencies.
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
 RUN bundle config --local without development:test
 RUN bundle install
 

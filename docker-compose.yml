@@ -1,19 +1,14 @@
-version: "3"
-
-# volumes:
-  #  postgres_data: {}
+version: '3'
 services:
   app:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
-    ports:
-      - 80:8080
-  #   depends_on:
-  #     - db    db:
-  #   image: postgres
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - .:/var/www/app
+    restart: always
+    depends_on:
+      - db
   web:
     build:
       context: .
@@ -22,3 +17,6 @@ services:
       - app
     ports:
       - 80:80
+    volumes:
+      - .:/var/www/app
+    restart: always
