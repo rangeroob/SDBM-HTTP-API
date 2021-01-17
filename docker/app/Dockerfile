@@ -27,4 +27,4 @@ EXPOSE 8080
 # run the following command:
 # $ bundle exec rackup --host 0.0.0.0 -p 4567.
 
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "8080"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
