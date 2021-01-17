@@ -17,8 +17,8 @@ COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle config --local without development:test
 RUN bundle install
-
-CMD ["bundle", "exec", "rake", "db:create[hello]"]
+# to create a database
+# docker-compose run app rake db:create[db]
 
 # Tell Docker to listen on port 4567.
 EXPOSE 8080
