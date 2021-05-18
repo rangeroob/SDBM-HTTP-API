@@ -7,8 +7,8 @@ GEM
       rack (>= 1.6.0)
     cutest (1.2.3)
       clap
-    nio4r (2.5.4)
-    puma (5.1.1)
+    nio4r (2.5.7)
+    puma (5.3.1)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-test (1.1.0)
